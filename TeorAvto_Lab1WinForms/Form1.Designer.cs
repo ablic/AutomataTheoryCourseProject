@@ -33,8 +33,6 @@ namespace TeorAvto_Lab
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.performButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.lexicalAnalysisTabPage = new System.Windows.Forms.TabPage();
-            this.lexicalAnalysisDataGridView = new System.Windows.Forms.DataGridView();
             this.lexemClassificationTabPage = new System.Windows.Forms.TabPage();
             this.keywordsDataGridView = new System.Windows.Forms.DataGridView();
             this.Keywords = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,8 +43,6 @@ namespace TeorAvto_Lab
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.openFileButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
-            this.lexicalAnalysisTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lexicalAnalysisDataGridView)).BeginInit();
             this.lexemClassificationTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.keywordsDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lexemClassificationDataGridView)).BeginInit();
@@ -83,7 +79,6 @@ namespace TeorAvto_Lab
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.lexicalAnalysisTabPage);
             this.tabControl1.Controls.Add(this.lexemClassificationTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -92,35 +87,13 @@ namespace TeorAvto_Lab
             this.tabControl1.Size = new System.Drawing.Size(843, 529);
             this.tabControl1.TabIndex = 3;
             // 
-            // lexicalAnalysisTabPage
-            // 
-            this.lexicalAnalysisTabPage.Controls.Add(this.lexicalAnalysisDataGridView);
-            this.lexicalAnalysisTabPage.Location = new System.Drawing.Point(4, 29);
-            this.lexicalAnalysisTabPage.Name = "lexicalAnalysisTabPage";
-            this.lexicalAnalysisTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.lexicalAnalysisTabPage.Size = new System.Drawing.Size(835, 496);
-            this.lexicalAnalysisTabPage.TabIndex = 0;
-            this.lexicalAnalysisTabPage.Text = "Лексический анализ";
-            this.lexicalAnalysisTabPage.UseVisualStyleBackColor = true;
-            // 
-            // lexicalAnalysisDataGridView
-            // 
-            this.lexicalAnalysisDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.lexicalAnalysisDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lexicalAnalysisDataGridView.Location = new System.Drawing.Point(3, 3);
-            this.lexicalAnalysisDataGridView.Name = "lexicalAnalysisDataGridView";
-            this.lexicalAnalysisDataGridView.RowHeadersWidth = 51;
-            this.lexicalAnalysisDataGridView.RowTemplate.Height = 29;
-            this.lexicalAnalysisDataGridView.Size = new System.Drawing.Size(829, 490);
-            this.lexicalAnalysisDataGridView.TabIndex = 0;
-            // 
             // lexemClassificationTabPage
             // 
             this.lexemClassificationTabPage.Controls.Add(this.keywordsDataGridView);
             this.lexemClassificationTabPage.Controls.Add(this.lexemClassificationDataGridView);
             this.lexemClassificationTabPage.Location = new System.Drawing.Point(4, 29);
             this.lexemClassificationTabPage.Name = "lexemClassificationTabPage";
-            this.lexemClassificationTabPage.Size = new System.Drawing.Size(911, 496);
+            this.lexemClassificationTabPage.Size = new System.Drawing.Size(835, 496);
             this.lexemClassificationTabPage.TabIndex = 1;
             this.lexemClassificationTabPage.Text = "Классификация лексем";
             this.lexemClassificationTabPage.UseVisualStyleBackColor = true;
@@ -218,8 +191,6 @@ namespace TeorAvto_Lab
             this.Name = "Form1";
             this.Text = "Form1";
             this.tabControl1.ResumeLayout(false);
-            this.lexicalAnalysisTabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.lexicalAnalysisDataGridView)).EndInit();
             this.lexemClassificationTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.keywordsDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lexemClassificationDataGridView)).EndInit();
@@ -237,8 +208,6 @@ namespace TeorAvto_Lab
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button performButton;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage lexicalAnalysisTabPage;
-        private System.Windows.Forms.DataGridView lexicalAnalysisDataGridView;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button openFileButton;
         private System.Windows.Forms.TabPage lexemClassificationTabPage;

@@ -24,49 +24,43 @@ namespace TeorAvto_Lab
         private void performButton_Click(object sender, EventArgs e)
         {
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
-            LexemClassifier lexemClassifier = new LexemClassifier();
 
             keywordsDataGridView.Rows.Clear();
 
             int rowsCount = Max(
-                lexemClassifier.Keywords.Count, 
-                lexemClassifier.Separators.Count, 
-                lexemClassifier.Identifiers.Count, 
-                lexemClassifier.Literals.Count);
+                lexicalAnalyzer.Keywords.Count,
+                lexicalAnalyzer.Separators.Count,
+                lexicalAnalyzer.Identifiers.Count,
+                lexicalAnalyzer.Literals.Count);
 
             for (int i = 0; i < rowsCount; i++)
             {
                 keywordsDataGridView.Rows.Add();
             }
 
-            for (int i = 0; i < lexemClassifier.Keywords.Count; i++)
+            for (int i = 0; i < lexicalAnalyzer.Keywords.Count; i++)
             {
-                keywordsDataGridView.Rows[i].Cells[0].Value = lexemClassifier.Keywords[i];
+                keywordsDataGridView.Rows[i].Cells[0].Value = lexicalAnalyzer.Keywords[i];
             }
 
-            for (int i = 0; i < lexemClassifier.Separators.Count; i++)
+            for (int i = 0; i < lexicalAnalyzer.Separators.Count; i++)
             {
-                keywordsDataGridView.Rows[i].Cells[1].Value = lexemClassifier.Separators[i];
+                keywordsDataGridView.Rows[i].Cells[1].Value = lexicalAnalyzer.Separators[i];
             }
 
 
             try
             {
-                var lexemes = lexicalAnalyzer.Analyze(codeTextBox.Text);
-                var classification = lexemClassifier.Classify1(lexemes);
+                lexemClassificationDataGridView.DataSource = lexicalAnalyzer.Analyze(codeTextBox.Text);
 
-                lexicalAnalysisDataGridView.DataSource = lexemes;
-
-                lexemClassificationDataGridView.DataSource = classification;
-
-                for (int i = 0; i < lexemClassifier.Identifiers.Count; i++)
+                for (int i = 0; i < lexicalAnalyzer.Identifiers.Count; i++)
                 {
-                    keywordsDataGridView.Rows[i].Cells[2].Value = lexemClassifier.Identifiers[i];
+                    keywordsDataGridView.Rows[i].Cells[2].Value = lexicalAnalyzer.Identifiers[i];
                 }
 
-                for (int i = 0; i < lexemClassifier.Literals.Count; i++)
+                for (int i = 0; i < lexicalAnalyzer.Literals.Count; i++)
                 {
-                    keywordsDataGridView.Rows[i].Cells[3].Value = lexemClassifier.Literals[i];
+                    keywordsDataGridView.Rows[i].Cells[3].Value = lexicalAnalyzer.Literals[i];
                 }
             }
             catch (Exception exeption)
