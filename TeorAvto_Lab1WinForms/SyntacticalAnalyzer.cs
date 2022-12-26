@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TeorAvto_Lab
+namespace ATFLCourseProject
 {
     class SyntacticalAnalyzer
     {

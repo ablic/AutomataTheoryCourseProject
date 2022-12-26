@@ -1,4 +1,4 @@
-﻿namespace TeorAvto_Lab
+﻿namespace ATFLCourseProject
 {
     public enum LexemeType
     {

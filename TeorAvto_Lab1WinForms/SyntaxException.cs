@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TeorAvto_Lab
+namespace ATFLCourseProject
 {
     class SyntaxException : Exception
     {
