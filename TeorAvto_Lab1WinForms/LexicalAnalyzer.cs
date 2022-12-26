@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
 
 namespace TeorAvto_Lab
 {
     public class LexicalAnalyzer
     {
-        public enum SymbolType
+        private enum SymbolType
         {
             Letter,
             Digit,
@@ -14,96 +16,95 @@ namespace TeorAvto_Lab
             Other
         }
 
-        private readonly List<char> validDelimiterSymbols = new List<char>
-        { 
+        private ReadOnlyCollection<char> validDelimiterSymbols = new ReadOnlyCollection<char>(new char[] 
+        {
             '+', '-', '*', '/', '=', '<', '>', '(', ')', '\n'
-        };
+        });
 
-        public readonly List<string> Keywords = new List<string>()
+        public ReadOnlyCollection<string> Keywords = new ReadOnlyCollection<string>(new string[]
         {
-            "Dim", "as", "integer", "do", "while", "or", "loop"
-        };
+             "Dim", "as", "integer", "double", "string", "do", "while", "And", "Or", "loop"
+        });
 
-        public readonly List<string> Separators = new List<string>()
+        public ReadOnlyCollection<string> Separators = new ReadOnlyCollection<string>(new string[]
         {
-            "=", "(", "<", ">", ")", "+", "<=", ">=", "\\n"
-        };
+             "=", "(", "<", ">", ")", "+", "-", "*", "/", "<=", ">=", "\\n"
+        });
 
         public List<string> Identifiers { get; private set; } = new List<string>();
         public List<string> Literals { get; private set; } = new List<string>();
 
-        public List<LexemToken> Analyze(string text)
-        {
-            List<Tuple<string, LexemeType>> result = PrimaryAnalyze(text);
-            return FinalClassify(result);
-        }
+        private List<Tuple<string, LexemeType>> tempLexemes = new List<Tuple<string, LexemeType>>();
 
-        private List<Tuple<string, LexemeType>> PrimaryAnalyze(string text)
+        public void AnalyzeLine(string line)
         {
-            List<Tuple<string, LexemeType>> lexemes = new List<Tuple<string, LexemeType>>();
-
-            string buffer = "";
+            StringBuilder buffer = new StringBuilder();
             LexemeType followLexemeType = LexemeType.SEPARATOR;
 
-            for (int i = 0; i < text.Length; i++)
+            if (line.Length == 0)
+                return;
+
+            for (int j = 0; j < line.Length; j++)
             {
-                char symbol = text[i];
+                char symbol = line[j];
 
-                if (followLexemeType == LexemeType.ID && buffer.Length > 8)
-                {
-                    throw new Exception("Длина идентификатора превысила 8 символов");
-                }
-
-                switch (GetSymbolType(text[i]))
+                switch (GetSymbolType(symbol))
                 {
                     case SymbolType.Letter:
 
-                        if (buffer == "")
+                        if (buffer.Length == 0)
                         {
                             followLexemeType = LexemeType.ID;
-                            buffer += symbol;
+                            buffer.Append(symbol);
                             break;
                         }
 
                         switch (followLexemeType)
                         {
                             case LexemeType.ID:
-                                buffer += symbol;
+                                buffer.Append(symbol);
+                                if (buffer.Length > 8)
+                                    throw new Exception("Длина идентификатора превысила 8 символов");
                                 break;
 
                             case LexemeType.LITERAL:
                                 throw new Exception("Наименование не может начинаться с цифр");
 
                             case LexemeType.SEPARATOR:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, followLexemeType));
-                                buffer = symbol.ToString();
+                                tempLexemes.Add(new Tuple<string, LexemeType>(buffer.ToString(), followLexemeType));
+                                buffer.Clear();
+                                buffer.Append(symbol);
                                 followLexemeType = LexemeType.ID;
                                 break;
                         }
+
                         break;
 
                     case SymbolType.Digit:
 
-                        if (buffer == "")
+                        if (buffer.Length == 0)
                         {
                             followLexemeType = LexemeType.LITERAL;
-                            buffer += symbol;
+                            buffer.Append(symbol);
                             break;
                         }
 
                         switch (followLexemeType)
                         {
                             case LexemeType.ID:
-                                buffer += symbol;
+                                buffer.Append(symbol);
+                                if (buffer.Length > 8)
+                                    throw new Exception("Длина идентификатора превысила 8 символов");
                                 break;
 
                             case LexemeType.LITERAL:
-                                buffer += symbol;
+                                buffer.Append(symbol);
                                 break;
 
                             case LexemeType.SEPARATOR:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, followLexemeType));
-                                buffer = symbol.ToString();
+                                tempLexemes.Add(new Tuple<string, LexemeType>(buffer.ToString(), followLexemeType));
+                                buffer.Clear();
+                                buffer.Append(symbol);
                                 followLexemeType = LexemeType.LITERAL;
                                 break;
                         }
@@ -111,42 +112,34 @@ namespace TeorAvto_Lab
 
                     case SymbolType.Separator:
 
-                        if (symbol == '\n')
-                        {
-                            lexemes.Add(new Tuple<string, LexemeType>(buffer, followLexemeType));
-                            lexemes.Add(new Tuple<string, LexemeType>("\\n", LexemeType.SEPARATOR));
-                            buffer = "";
-                            break;
-                        }
-
-                        if (buffer == "")
+                        if (buffer.Length == 0)
                         {
                             followLexemeType = LexemeType.SEPARATOR;
-                            buffer += symbol;
+                            buffer.Append(symbol);
                             break;
                         }
 
                         switch (followLexemeType)
                         {
-
                             case LexemeType.ID:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, followLexemeType));
-                                buffer = symbol.ToString();
+                                tempLexemes.Add(new Tuple<string, LexemeType>(buffer.ToString(), followLexemeType));
+                                buffer.Clear();
+                                buffer.Append(symbol);
                                 followLexemeType = LexemeType.SEPARATOR;
                                 break;
 
                             case LexemeType.LITERAL:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, followLexemeType));
-                                buffer = symbol.ToString();
+                                tempLexemes.Add(new Tuple<string, LexemeType>(buffer.ToString(), followLexemeType));
+                                buffer.Clear();
+                                buffer.Append(symbol);
                                 followLexemeType = LexemeType.SEPARATOR;
                                 break;
 
                             case LexemeType.SEPARATOR:
                                 if (buffer.Length > 1)
-                                {
                                     throw new Exception("Длина разделителя не может превышать два символа");
-                                }
-                                buffer += symbol;
+
+                                buffer.Append(symbol);
                                 followLexemeType = LexemeType.SEPARATOR;
                                 break;
                         }
@@ -154,26 +147,11 @@ namespace TeorAvto_Lab
 
                     case SymbolType.Space:
 
-                        if (buffer == "")
-                        {
+                        if (buffer.Length == 0)
                             break;
-                        }
 
-                        switch (followLexemeType)
-                        {
-                            case LexemeType.ID:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, LexemeType.ID));
-                                break;
-
-                            case LexemeType.LITERAL:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, LexemeType.LITERAL));
-                                break;
-
-                            case LexemeType.SEPARATOR:
-                                lexemes.Add(new Tuple<string, LexemeType>(buffer, LexemeType.SEPARATOR));
-                                break;
-                        }
-                        buffer = "";
+                        tempLexemes.Add(new Tuple<string, LexemeType>(buffer.ToString(), followLexemeType));
+                        buffer.Clear();
                         break;
 
                     case SymbolType.Other:
@@ -181,66 +159,54 @@ namespace TeorAvto_Lab
                 }
             }
 
-            switch (followLexemeType)
+            if (buffer.Length > 0)
             {
-                case LexemeType.ID:
-                    lexemes.Add(new Tuple<string, LexemeType>(buffer, LexemeType.ID));
-                    break;
-
-                case LexemeType.LITERAL:
-                    lexemes.Add(new Tuple<string, LexemeType>(buffer, LexemeType.LITERAL));
-                    break;
-
-                case LexemeType.SEPARATOR:
-                    lexemes.Add(new Tuple<string, LexemeType>(buffer, LexemeType.SEPARATOR));
-                    break;
+                tempLexemes.Add(new Tuple<string, LexemeType>(buffer.ToString(), followLexemeType));
+                buffer.Clear();
             }
 
-            return lexemes;
+            tempLexemes.Add(new Tuple<string, LexemeType>("\\n", LexemeType.SEPARATOR));
         }
 
-        private List<LexemToken> FinalClassify (List<Tuple<string, LexemeType>> lexemes)
+        public List<LexemeToken> GetLexemes()
         {
-            List<LexemToken> result = new List<LexemToken>();
+            List<LexemeToken> result = new List<LexemeToken>();
 
-            foreach (var lexeme in lexemes)
+            foreach (var lexeme in tempLexemes)
             {
-                LexemToken token = new LexemToken(lexeme.Item1, lexeme.Item2);
+                LexemeToken token = new LexemeToken(lexeme.Item1, lexeme.Item2);
                 result.Add(token);
 
-                if (token.LexemeType == LexemeType.ID)
+                if (token.Type == LexemeType.ID)
                 {
                     if (!Identifiers.Contains(lexeme.Item1))
                         Identifiers.Add(lexeme.Item1);
                 }
-                else if (token.LexemeType == LexemeType.LITERAL)
+                else if (token.Type == LexemeType.LITERAL)
                 {
                     if (!Literals.Contains(lexeme.Item1))
                         Literals.Add(lexeme.Item1);
                 }
             }
 
+            result.Add(new LexemeToken("", LexemeType.END));
+            tempLexemes.Clear();
             return result;
         }
 
         private SymbolType GetSymbolType(char symbol)
         {
             if (symbol == ' ')
-            {
                 return SymbolType.Space;
-            }
+
             else if (char.IsLetter(symbol))
-            {
                 return SymbolType.Letter;
-            }
+
             else if (char.IsDigit(symbol))
-            {
                 return SymbolType.Digit;
-            }
+
             else if (validDelimiterSymbols.Contains(symbol))
-            {
                 return SymbolType.Separator;
-            }
 
             return SymbolType.Other;
         }
