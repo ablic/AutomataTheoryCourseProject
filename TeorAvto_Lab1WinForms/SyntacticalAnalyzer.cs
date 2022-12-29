@@ -26,9 +26,8 @@ namespace ATFLCourseProject
 
         private Stack<LexemeToken> exprOperands = new Stack<LexemeToken>();
         private Stack<LexemeToken> exprSeparators = new Stack<LexemeToken>();
-        private int exprCounter = 1;
 
-        public readonly List<OperationInfo> operations = new List<OperationInfo>();
+        public readonly List<List<OperationInfo>> operations = new List<List<OperationInfo>>();
 
         public void Analyze(List<LexemeToken> lexemes)
         {
@@ -38,7 +37,6 @@ namespace ATFLCourseProject
             exprOperands.Clear();
             exprSeparators.Clear();
             exprOperands.Clear();
-            exprCounter = 1;
             operations.Clear();
             OperatorList();
         }
@@ -211,6 +209,8 @@ namespace ATFLCourseProject
 
         private void Expression()
         {
+            operations.Add(new List<OperationInfo>());
+
             while (true)//currentLexeme.Type != LexemeType.SEPARATOR_LineBreak)
             {
                 if (IsExprOperand())
@@ -426,7 +426,6 @@ namespace ATFLCourseProject
 
             exprSeparators.Clear();
             exprOperands.Clear();
-            exprCounter++;
         }
 
         private bool IsExprOperand()
@@ -497,6 +496,8 @@ namespace ATFLCourseProject
 
         private void D6()
         {
+            if (exprSeparators.Count > 0 || exprOperands.Count > 1)
+                throw new SyntaxException("Ошибка разбора выражения");
             //Успешное завершение
         }
 
@@ -505,12 +506,12 @@ namespace ATFLCourseProject
             if (exprOperands.Count < 2)
                 throw new SyntaxException("Ошибка разбора выражения");
 
-            LexemeToken operator1 = exprOperands.Pop();
             LexemeToken operator2 = exprOperands.Pop();
-            LexemeToken result = new LexemeToken($"Op{operations.Count + 1} (Expr{exprCounter})", LexemeType.ID);
+            LexemeToken operator1 = exprOperands.Pop();
+            LexemeToken result = new LexemeToken($"Op{operations[operations.Count - 1].Count + 1}", LexemeType.ID);
 
             exprOperands.Push(result);
-            operations.Add(new OperationInfo(operation, operator1, operator2, result));
+            operations[operations.Count - 1].Add(new OperationInfo(operation, operator1, operator2, result));
         }
     }
 }

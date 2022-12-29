@@ -308,14 +308,14 @@ namespace ATFLCourseProject
             this.openFileButton.UseVisualStyleBackColor = true;
             this.openFileButton.Click += new System.EventHandler(this.openFileButton_Click);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1239, 713);
             this.Controls.Add(this.splitContainer1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "Транслятор";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.lexemClassificationTabPage.ResumeLayout(false);
@@ -349,14 +349,14 @@ namespace ATFLCourseProject
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView operationsDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
     }
 }
 

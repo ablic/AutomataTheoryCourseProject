@@ -105,8 +105,13 @@ namespace ATFLCourseProject
                 return;
             }
 
-            foreach (var info in syntacticalAnalyzer.operations)
-                operationsDataGridView.Rows.Add(info.Operation.Value, info.Operand1.Value, info.Operand2.Value, info.Result.Value);
+            foreach (var item in syntacticalAnalyzer.operations)
+            {
+                foreach (var info in item)
+                    operationsDataGridView.Rows.Add(info.Operation.Value, info.Operand1.Value, info.Operand2.Value, info.Result.Value);
+
+                operationsDataGridView.Rows.Add();
+            }
         }
     }
 }

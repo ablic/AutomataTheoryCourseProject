@@ -28,7 +28,7 @@ namespace ATFLCourseProject
 
         public ReadOnlyCollection<string> Separators = new ReadOnlyCollection<string>(new string[]
         {
-             "=", "(", "<", ">", ")", "+", "-", "*", "/", "<=", ">=", "\\n"
+             "=", "(", "<", ">", ")", "+", "-", "*", "/", "\\n"
         });
 
         public List<string> Identifiers { get; private set; } = new List<string>();
