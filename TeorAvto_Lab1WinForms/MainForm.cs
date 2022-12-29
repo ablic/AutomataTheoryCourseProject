@@ -59,6 +59,8 @@ namespace ATFLCourseProject
         {
             List<LexemeToken> lexemes;
 
+            lexicalAnalyzer.Identifiers.Clear();
+            lexicalAnalyzer.Literals.Clear();
             lexemClassificationDataGridView.Rows.Clear();
             identifiersListBox.Items.Clear();
             literalsListBox.Items.Clear();
@@ -82,7 +84,6 @@ namespace ATFLCourseProject
                 MessageBox.Show("Лексическая ошибка.\n" + exeption.Message);
                 return;
             }
-
 
             foreach (LexemeToken lexeme in lexemes)
                 lexemClassificationDataGridView.Rows.Add(lexeme.Type, lexeme.Value);

@@ -191,6 +191,7 @@ namespace ATFLCourseProject
 
             result.Add(new LexemeToken("", LexemeType.END));
             tempLexemes.Clear();
+
             return result;
         }
 
